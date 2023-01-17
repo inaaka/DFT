@@ -76,7 +76,7 @@ void dft(Complex *f, Complex *f_F, double smp_rate, int datasize)
         /* printf("%3.2f %%\n", (double)t * 100.0 / (double)datasize); */
         f_F[t].real = 0;
         f_F[t].imag = 0;
-        for (x = 0; x < halfsize; x++)
+        for (x = 0; x < datasize; x++)
         {
             ang = -PI2 * (double)x * (double)t / smp_rate;
             cmplx = dft_rotation(ang);
