@@ -14,7 +14,7 @@
 /* 離散フーリエ変換 */
 double *dft(double *signal, int datasize);
 /* 高速フーリエ変換（再帰用） */
-void fft_re(double complex *signal, int datasize);
+int fft_re(double complex *signal, int datasize);
 /* 高速フーリエ変換 */
 double *fft(double *signal, int datasize);
 /* 離散フーリエ変換後のデータを出力 */
