@@ -33,10 +33,12 @@ int main(void)
     }
 
     /* フーリエ変換 */
+    // result = fft(sin_mix, datasize);
     result = dft(sin_mix, datasize);
 
     /* 結果の出力 */
-    dft_print2(result, datasize, SMP_RATE);
+    // fft_print2(result, datasize, SMP_RATE);
+    dft_print2(result, datasize);
 
     /* メモリの開放 */
     free(sin1);
