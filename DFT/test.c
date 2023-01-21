@@ -1,7 +1,6 @@
 #include "dft.h"
 
 #include <math.h>
-#include <time.h>
 
 #define SMP_RATE 8000 /* サンプリングレート */
 #define SMP_TIME 1.0  /* サンプリング時間 */
