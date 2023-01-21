@@ -206,7 +206,6 @@ Output data after FFT
     datasize: Number of data
     smprate: sampling rate
 */
-
 void fft_print(double *data, int datasize, int smprate)
 {
     int i, datasize2;
