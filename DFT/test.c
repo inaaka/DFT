@@ -3,12 +3,12 @@
 #include <math.h>
 #include <time.h>
 
-#define SMP_RATE 8000 /* sampling rate */
-#define SMP_TIME 1.0  /* sampling time */
-#define AMP1 3.0      /* Amplitude of waveform 1 */
-#define AMP2 5.0      /* Amplitude of waveform 2 */
-#define FREQ1 200     /* Frequency of waveform 1 */
-#define FREQ2 1000    /* Frequency of waveform 2 */
+#define SMP_RATE 44100 /* sampling rate */
+#define SMP_TIME 3.0   /* sampling time */
+#define AMP1 3.0       /* Amplitude of waveform 1 */
+#define AMP2 5.0       /* Amplitude of waveform 2 */
+#define FREQ1 300      /* Frequency of waveform 1 */
+#define FREQ2 1000     /* Frequency of waveform 2 */
 
 int main(void)
 {
@@ -30,16 +30,15 @@ int main(void)
         sin1[i] = AMP1 * sin(DFT_PI2 * FREQ1 * (double)i / (double)datasize);
         sin2[i] = AMP2 * sin(DFT_PI2 * FREQ2 * (double)i / (double)datasize);
         sin_mix[i] = sin1[i] + sin2[i];
-        printf("%f,%f\n", SMP_TIME * (double)i / (double)datasize, sin_mix[i]);
     }
 
     /* Fourier transform */
-    // result = fft(sin_mix, datasize);
-    result = dft(sin_mix, datasize);
+    result = fft(sin_mix, datasize);
+    // result = dft(sin_mix, datasize);
 
     /* Output Results */
-    // fft_print2(result, datasize, SMP_RATE);
-    dft_print2(result, datasize);
+    fft_print2(result, datasize);
+    // dft_print2(result, datasize);
 
     /* Free up memory */
     free(sin1);

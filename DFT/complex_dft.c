@@ -27,6 +27,17 @@ dftComplex addComplex(dftComplex a, dftComplex b)
   return result;
 }
 
+/* subtraction of complex numbers */
+dftComplex subComplex(dftComplex a, dftComplex b)
+{
+  dftComplex result;
+
+  result.real = a.real - b.real;
+  result.imag = a.imag - b.imag;
+
+  return result;
+}
+
 /* multiplication of complex numbers */
 dftComplex mulComplex(dftComplex a, dftComplex b)
 {

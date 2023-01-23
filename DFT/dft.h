@@ -20,6 +20,6 @@ void dft_print(double *data, int datasize);
 /* Output data after DFT / (N/2) */
 void dft_print2(double *data, int datasize);
 /* Output data after FFT */
-void fft_print(double *data, int datasize, int smprate);
+void fft_print(double *data, int datasize);
 /* Output data after FFT /(N/2) */
-void fft_print2(double *data, int datasize, int smprate);
+void fft_print2(double *data, int datasize);

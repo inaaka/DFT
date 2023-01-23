@@ -99,10 +99,17 @@ int fft_re(dftComplex *signal, int datasize)
         }
 
         /* Data Merging */
-        for (i = 0; i < datasize; i++)
+        // for (i = 0; i < datasize; i++)
+        //{
+        //     angle = newComplex(0.0, DFT_PI2 * (double)i / (double)datasize);
+        //     signal[i] = addComplex(even[i % halfsize], mulComplex(odd[i % halfsize], expComplex(angle)));
+        // }
+        for (i = 0; i < datasize / 2; i++)
         {
-            angle = newComplex(0.0, -DFT_PI2 * (double)i / (double)datasize);
-            signal[i] = addComplex(even[i % halfsize], mulComplex(odd[i % halfsize], expComplex(angle)));
+            angle = newComplex(0.0, DFT_PI2 * (double)i / (double)datasize);
+            odd[i] = mulComplex(odd[i], expComplex(angle));
+            signal[i] = addComplex(even[i], odd[i]);
+            signal[datasize / 2 + i] = subComplex(even[i], odd[i]);
         }
 
         /* Free up memory */
@@ -137,13 +144,9 @@ double *fft(double *signal, int datasize)
     /* Dynamic memory allocation */
     csignal = (dftComplex *)malloc(sizeof(dftComplex) * datasize2);
     for (i = 0; i < datasize; i++)
-    {
         csignal[i] = newComplex(signal[i], 0.0);
-    }
     for (/* i = datasize */; i < datasize2; i++)
-    {
         csignal[i] = newComplex(0.0, 0.0);
-    }
 
     /* FFT */
     n = fft_re(csignal, datasize2);
@@ -155,8 +158,13 @@ double *fft(double *signal, int datasize)
     }
 
     /* Convert converted data to real numbers */
-    result = (double *)malloc(sizeof(double) * datasize);
-    for (i = 0; i < datasize; i++)
+    result = (double *)malloc(sizeof(double) * datasize2);
+    if (result == NULL)
+    {
+        free(csignal);
+        exit(EXIT_FAILURE);
+    }
+    for (i = 0; i < datasize2; i++)
     {
         result[i] = absComplex(csignal[i]);
     }
@@ -179,7 +187,7 @@ void dft_print(double *data, int datasize)
 
     for (i = 0; i < datasize; i++)
     {
-        printf("%f,%f\n", (double)i, data[i]);
+        printf("%d,%f\n", i, data[i]);
     }
 }
 
@@ -195,7 +203,7 @@ void dft_print2(double *data, int datasize)
 
     for (i = 0; i < datasize; i++)
     {
-        printf("%f,%f\n", (double)i, data[i] * 2.0 / datasize);
+        printf("%d,%f\n", i, data[i] * 2.0 / datasize);
     }
 }
 
@@ -204,24 +212,19 @@ Output data after FFT
   arguments:
     *data: Data after DFT
     datasize: Number of data
-    smprate: sampling rate
 */
-void fft_print(double *data, int datasize, int smprate)
+void fft_print(double *data, int datasize)
 {
     int i, datasize2;
 
     /* Match the number of data to the n-th power of 2 */
     datasize2 = 1;
     while (datasize2 < datasize)
-    {
         datasize2 *= 2;
-    }
 
     /* Output */
-    for (i = 0; i < datasize; i++)
-    {
-        printf("%f,%f\n", (double)i * smprate / (double)datasize2, data[i]);
-    }
+    for (i = 0; i < datasize2; i++)
+        printf("%f,%f\n", (double)i * (double)datasize / (double)datasize2, data[i]);
 }
 
 /*
@@ -229,22 +232,17 @@ Output data after FFT /(N/2)
   arguments:
     *data: Data after DFT
     datasize: Number of data
-    smprate: sampling rate
 */
-void fft_print2(double *data, int datasize, int smprate)
+void fft_print2(double *data, int datasize)
 {
     int i, datasize2;
 
     /* Match the number of data to the n-th power of 2 */
     datasize2 = 1;
     while (datasize2 < datasize)
-    {
         datasize2 *= 2;
-    }
 
     /* Output */
-    for (i = 0; i < datasize; i++)
-    {
-        printf("%f,%f\n", (double)i * smprate / (double)datasize2, data[i] * 2.0 / datasize);
-    }
+    for (i = 0; i < datasize2; i++)
+        printf("%f,%f\n", (double)i * (double)datasize / (double)datasize2, data[i] * 2.0 / datasize);
 }
