@@ -30,6 +30,7 @@ int main(void)
         sin1[i] = AMP1 * sin(DFT_PI2 * FREQ1 * (double)i / (double)datasize);
         sin2[i] = AMP2 * sin(DFT_PI2 * FREQ2 * (double)i / (double)datasize);
         sin_mix[i] = sin1[i] + sin2[i];
+        printf("%f,%f\n", SMP_TIME * (double)i / (double)datasize, sin_mix[i]);
     }
 
     /* Fourier transform */

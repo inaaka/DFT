@@ -1,6 +1,6 @@
 /*
 set of functions for Discrete Fourier Transform
-2023/01/21
+2023/01/23
 */
 
 #include "dft.h"
@@ -17,10 +17,10 @@ double *dft(double *signal, int datasize)
 {
     int i, j;
     double *result;
-    double complex *cresult, csignal, angle;
+    dftComplex *cresult, csignal, angle;
 
     /* Dynamic memory allocation */
-    cresult = (double _Complex *)malloc(sizeof(double _Complex) * datasize);
+    cresult = (dftComplex *)malloc(sizeof(dftComplex) * datasize);
     if (cresult == NULL)
     {
         fprintf(stderr, "Failed to dynamic allocate memory.\n");
@@ -37,14 +37,14 @@ double *dft(double *signal, int datasize)
     /* DFT */
     for (i = 0; i < datasize; i++)
     {
-        cresult[i] = 0.0 + 0.0 * _Complex_I;
+        cresult[i] = newComplex(0.0, 0.0);
         for (j = 0; j < datasize; j++)
         {
-            csignal = signal[j] + 0.0 * _Complex_I;
-            angle = -DFT_PI2 * (double)i * (double)j / (double)datasize * _Complex_I;
-            cresult[i] += csignal * cexp(angle);
+            csignal = newComplex(signal[j], 0.0);
+            angle = newComplex(0.0, -DFT_PI2 * (double)i * (double)j / (double)datasize);
+            cresult[i] = addComplex(cresult[i], mulComplex(csignal, expComplex(angle)));
         }
-        result[i] = cabs(cresult[i]);
+        result[i] = absComplex(cresult[i]);
     }
 
     return result;
@@ -58,22 +58,22 @@ Fast Fourier Transform (recursion)
     *signal: Data before FFT -> Data after FFT
     datasize: Number of data
 */
-int fft_re(double complex *signal, int datasize)
+int fft_re(dftComplex *signal, int datasize)
 {
     int i, halfsize, n;
-    double complex *odd, *even, angle;
+    dftComplex *odd, *even, angle;
 
     /* When the number of data is 1 */
     if (datasize != 1)
     {
         /* Dynamic memory allocation */
         halfsize = datasize / 2;
-        odd = (double complex *)malloc(sizeof(double complex) * halfsize);
+        odd = (dftComplex *)malloc(sizeof(dftComplex) * halfsize);
         if (odd == NULL)
         {
             return 1;
         }
-        even = (double complex *)malloc(sizeof(double complex) * halfsize);
+        even = (dftComplex *)malloc(sizeof(dftComplex) * halfsize);
         if (even == NULL)
         {
             free(odd);
@@ -101,8 +101,8 @@ int fft_re(double complex *signal, int datasize)
         /* Data Merging */
         for (i = 0; i < datasize; i++)
         {
-            angle = 0.0 + -DFT_PI2 * (double)i / (double)datasize * _Complex_I;
-            signal[i] = even[i % halfsize] + odd[i % halfsize] * cexp(angle);
+            angle = newComplex(0.0, -DFT_PI2 * (double)i / (double)datasize);
+            signal[i] = addComplex(even[i % halfsize], mulComplex(odd[i % halfsize], expComplex(angle)));
         }
 
         /* Free up memory */
@@ -125,7 +125,7 @@ double *fft(double *signal, int datasize)
 {
     int i, datasize2, n;
     double *result;
-    double complex *csignal;
+    dftComplex *csignal;
 
     /* Match the number of data to the n-th power of 2 */
     datasize2 = 1;
@@ -135,14 +135,14 @@ double *fft(double *signal, int datasize)
     }
 
     /* Dynamic memory allocation */
-    csignal = (double complex *)malloc(sizeof(double complex) * datasize2);
+    csignal = (dftComplex *)malloc(sizeof(dftComplex) * datasize2);
     for (i = 0; i < datasize; i++)
     {
-        csignal[i] = signal[i] + 0.0 * _Complex_I;
+        csignal[i] = newComplex(signal[i], 0.0);
     }
     for (/* i = datasize */; i < datasize2; i++)
     {
-        csignal[i] = 0.0 + 0.0 * _Complex_I;
+        csignal[i] = newComplex(0.0, 0.0);
     }
 
     /* FFT */
@@ -158,7 +158,7 @@ double *fft(double *signal, int datasize)
     result = (double *)malloc(sizeof(double) * datasize);
     for (i = 0; i < datasize; i++)
     {
-        result[i] = cabs(csignal[i]);
+        result[i] = absComplex(csignal[i]);
     }
 
     /* Free up memory */

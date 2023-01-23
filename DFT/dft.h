@@ -1,18 +1,18 @@
 /*
 set of functions for Discrete Fourier Transform
-2023/01/21
+2023/01/23
 */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <complex.h>
+#include "complex_dft.h"
 
 #define DFT_PI2 6.283185307179586
 
 /* Discrete Fourier Transform */
 double *dft(double *signal, int datasize);
 /* Fast Fourier Transform (recursion) */
-int fft_re(double complex *signal, int datasize);
+int fft_re(dftComplex *signal, int datasize);
 /* Fast Fourier Transform */
 double *fft(double *signal, int datasize);
 /* Output data after DFT */
