@@ -27,8 +27,8 @@ int main(void)
     /* Sine wave generation */
     for (i = 0; i < datasize; i++)
     {
-        sin1[i] = AMP1 * sin(DFT_PI2 * FREQ1 * (double)i / (double)datasize);
-        sin2[i] = AMP2 * sin(DFT_PI2 * FREQ2 * (double)i / (double)datasize);
+        sin1[i] = AMP1 * sin(DFT_PI2 * FREQ1 * (double)i * (double)SMP_TIME / (double)datasize);
+        sin2[i] = AMP2 * sin(DFT_PI2 * FREQ2 * (double)i * (double)SMP_TIME / (double)datasize);
         sin_mix[i] = sin1[i] + sin2[i];
     }
 
