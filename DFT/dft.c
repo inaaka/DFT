@@ -174,36 +174,21 @@ double *fft(double *signal, int datasize)
 
     return result;
 }
-
 /*
 Output data after DFT
   arguments:
     *data: Data after DFT
     datasize: Number of data
+    smprate: sampling rate
 */
-void dft_print(double *data, int datasize)
+void dft_print(double *data, int datasize, int smprate)
 {
-    int i;
+    int i, datasize2;
 
+    /* Output */
     for (i = 0; i < datasize; i++)
     {
-        printf("%d,%f\n", i, data[i]);
-    }
-}
-
-/*
-Output data after DFT /(N/2)
-  arguments:
-    *data: Data after DFT
-    datasize: Number of data
-*/
-void dft_print2(double *data, int datasize)
-{
-    int i;
-
-    for (i = 0; i < datasize; i++)
-    {
-        printf("%d,%f\n", i, data[i] * 2.0 / datasize);
+        printf("%f,%f\n", (double)i * (double)smprate / (double)datasize, data[i]);
     }
 }
 
@@ -212,37 +197,22 @@ Output data after FFT
   arguments:
     *data: Data after DFT
     datasize: Number of data
+    smprate: sampling rate
 */
-void fft_print(double *data, int datasize)
+void fft_print(double *data, int datasize, int smprate)
 {
     int i, datasize2;
 
     /* Match the number of data to the n-th power of 2 */
     datasize2 = 1;
     while (datasize2 < datasize)
+    {
         datasize2 *= 2;
+    }
 
     /* Output */
-    for (i = 0; i < datasize2; i++)
-        printf("%f,%f\n", (double)i * (double)datasize / (double)datasize2, data[i]);
-}
-
-/*
-Output data after FFT /(N/2)
-  arguments:
-    *data: Data after DFT
-    datasize: Number of data
-*/
-void fft_print2(double *data, int datasize)
-{
-    int i, datasize2;
-
-    /* Match the number of data to the n-th power of 2 */
-    datasize2 = 1;
-    while (datasize2 < datasize)
-        datasize2 *= 2;
-
-    /* Output */
-    for (i = 0; i < datasize2; i++)
-        printf("%f,%f\n", (double)i * (double)datasize / (double)datasize2, data[i] * 2.0 / datasize);
+    for (i = 0; i < datasize; i++)
+    {
+        printf("%f,%f\n", (double)i * smprate / (double)datasize2, data[i] * 2.0 / datasize);
+    }
 }
