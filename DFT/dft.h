@@ -1,25 +1,20 @@
-/*
-set of functions for Discrete Fourier Transform
-2023/01/23
-*/
+/* discrete Fourier transform */
 
+#ifndef DFT_H
+#define DFT_H
+
+#include "complex_dft.h"
+#include "dft_define.h"
+
+/* include header files */
 #include <stdio.h>
 #include <stdlib.h>
-#include "complex_dft.h"
+#include <math.h>
 
-#define DFT_PI2 6.283185307179586
+/* calculation of rotation factor */
+dftComplex dft_rotation(double angle);
 
-/* Discrete Fourier Transform */
-double *dft(double *signal, int datasize);
-/* Fast Fourier Transform (recursion) */
-int fft_re(dftComplex *signal, int datasize);
-/* Fast Fourier Transform */
-double *fft(double *signal, int datasize);
-/* Output data after DFT */
-void dft_print(double *data, int datasize);
-/* Output data after DFT / (N/2) */
-void dft_print2(double *data, int datasize);
-/* Output data after FFT */
-void fft_print(double *data, int datasize);
-/* Output data after FFT /(N/2) */
-void fft_print2(double *data, int datasize);
+/* dft main process */
+void dft(dftComplex *f, dftComplex *f_F, double smp_rate, int datasize);
+
+#endif
