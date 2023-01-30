@@ -1,4 +1,0 @@
-sample_200_1000
-smp_rate: 8000Hz, smp_time:1.0s
-sin1 : f:200Hz, Amp:3
-sin2 : f:1000Hz, Amp:5
